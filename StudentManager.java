@@ -1,11 +1,21 @@
 import java.util.ArrayList;
 import java.util.Scanner;
-import java.util.regex.Pattern;
 
 public class StudentManager
 {
     public static void main(String[] args)
     {
+        ArrayList<People> students = new ArrayList<>();
+
+        //test students
+
+        ArrayList<String> testCourses = new ArrayList<>();
+        testCourses.add("Into to Java");
+        testCourses.add("Outro to Java");
+        
+        People testStudent1 = new Student("Jeremy", "Jeremy@Elbertson.com", "S-985774", testCourses);
+        students.add(testStudent1);
+
         Scanner scanner = new Scanner(System.in);
 
         System.out.println("\n~~~ WELCOME TO THE STUDENT MANAGER! ~~~\n");
@@ -103,6 +113,52 @@ public class StudentManager
                         else
                             break;
                     }
+
+                    //course input (array)
+                    ArrayList<String> coursesInput = new ArrayList<String>();
+                    boolean looping = true;
+                    while(looping)
+                    {
+                        System.out.println("Please enter one of their courses:");
+                        String courseInput = scanner.nextLine();
+
+                        //validation
+
+                        //empty
+                        if(courseInput.isEmpty())
+                        {
+                            System.out.println("ERROR: Course cannot be blank.\n");
+                            continue;
+                        }
+                        //if the validation was successful, add the course to the arraylist and ask if they'd like to add another
+                        else
+                        {
+                            coursesInput.add(courseInput);
+
+                            //repeat until y or n is typed
+                            while(true)
+                            {
+                                System.out.println("Would you like to add another course? (y/n)");
+                                input = scanner.nextLine();
+
+                                if(input.contains("y"))
+                                    break;
+                                else if(input.contains("n"))
+                                {
+                                    looping = false;
+                                    break;
+                                }
+                                else
+                                    System.out.println("ERROR: Invalid Input.\n");
+                            }
+                        }
+                    }
+
+                    //create the student and add them to the list
+                    People newStudent = new Student(nameInput, emailInput, idInput, coursesInput);
+                    students.add(newStudent);
+
+                    System.out.println(nameInput + " has been registered!\n");
                 break;
 
                 case "2":
@@ -134,7 +190,12 @@ public class StudentManager
     }
 }
 
-abstract class Person
+interface People
+{
+
+}
+
+abstract class Person implements People
 {
     String name;
     String email;
@@ -157,9 +218,17 @@ abstract class Person
 
 class Student extends Person
 {
-    public Student(String name, String email, String id, ArrayList<String> classes)
+    String id;
+    ArrayList<String> courses = new ArrayList<>();
+
+    public Student(String name, String email, String id, ArrayList<String> courses)
     {
         super(name, email);
+        this.id = id;
+        
+        //add each course individually
+        for(String course : courses)
+            this.courses.add(course);
     }
 
     @Override public String displayInfo()

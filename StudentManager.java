@@ -20,12 +20,35 @@ public class StudentManager
             + "\n5. Exit");
 
             String input = scanner.nextLine();
+            boolean valid;
 
             switch(input)
             {
                 //add new student
                 case "1":
+                    System.out.println("\n~ Add a Student ~");
 
+                    //name input
+
+                    System.out.println("Please enter their name:");
+                    String nameInput = scanner.nextLine();
+
+                    //email input
+
+                    valid = false;
+                    while(!valid)
+                    {
+                        System.out.println("Please enter their email:");
+                        String emailInput = scanner.nextLine();
+
+                        String emailRegex = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9+_.-]+$"; //[A-Za-z0-9+_.-] matches one or more [A-Z, a-z, 0-9], '_', '.', '-'
+
+                        //check if the email is valid based on the regex above
+                        if (emailInput.matches(emailRegex))
+                            valid = true;
+                        else
+                            System.out.println("ERROR: Email is invalid.");
+                    }
                 break;
 
                 case "2":
@@ -48,7 +71,7 @@ public class StudentManager
 
                 //invalid input
                 default:
-                    System.out.println("ERROR: INVALID INPUT\n");
+                    System.out.println("ERROR: Invalid Input.\n");
                 break;
             }
         }
@@ -65,6 +88,11 @@ abstract class Person
     }
 
     //getters and setters
+    //setters
+    public void setEmail(String email)
+    {
+        
+    }
 
     //abstract method will be overridden by subclasses (runtime polymorphism)
     public abstract String displayInfo();

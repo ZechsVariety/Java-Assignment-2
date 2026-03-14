@@ -6,15 +6,29 @@ public class StudentManager
     public static void main(String[] args)
     {
         ArrayList<People> students = new ArrayList<>();
+        ArrayList<People> instructors = new ArrayList<>();
 
         //test students
 
-        ArrayList<String> testCourses = new ArrayList<>();
-        testCourses.add("Into to Java");
-        testCourses.add("Outro to Java");
+        ArrayList<String> testCourses1 = new ArrayList<>();
+        testCourses1.add("Into to Java");
+        testCourses1.add("Web Programming with PHP");
+        testCourses1.add("Document Automation Python");
+        testCourses1.add("Web Design with CSS");
+        testCourses1.add("Communication Technology");
         
-        People testStudent1 = new Student("Jeremy", "Jeremy@Elbertson.com", "S-985774", testCourses);
-        students.add(testStudent1);
+        students.add(new Student("Zech Ferguson", "Zech.Ferguson@MyGeorgian.ca", "S-985774985", testCourses1));
+
+        ArrayList<String> testCourses2 = new ArrayList<>();
+        testCourses2.add("Into to Java");
+        testCourses2.add("Outro to Java");
+        
+        students.add(new Student("Aiden Piercy", "Aiden.Piercey@MyGeorgian.ca", "S-871239857", testCourses2));
+
+        //hardcoded instructors
+        instructors.add(new Instructor("Mr. Elbertson", "JeremyElbertson@georgiancollege.ca"));
+        instructors.add(new Instructor("Ms. Cole", "LouisCole@georgiancollege.ca"));
+        instructors.add(new Instructor("Mr. Squarepants", "SpongebobSquarepants@georgiancollege.ca"));
 
         Scanner scanner = new Scanner(System.in);
 
@@ -161,16 +175,33 @@ public class StudentManager
                     System.out.println(nameInput + " has been registered!\n");
                 break;
 
+                //delete student
                 case "2":
                     
                 break;
 
+                //search student
                 case "3":
                     
                 break;
 
+                //display students and instructors
                 case "4":
-                    
+                    //print students
+                    System.out.println("\n~ STUDENTS: ~");
+                    for (People student : students)
+                    {
+                        student.displayInfo();
+                    }
+
+                    //print instructors
+                    System.out.println("\n~ INSTRUCTORS: ~");
+                    for (People instructor : instructors)
+                    {
+                        instructor.displayInfo();
+                    }
+
+                    System.out.println();
                 break;
 
                 //exit
@@ -192,7 +223,8 @@ public class StudentManager
 
 interface People
 {
-
+    //abstract method will be overridden by subclasses (runtime polymorphism)
+    public abstract void displayInfo();
 }
 
 abstract class Person implements People
@@ -205,15 +237,6 @@ abstract class Person implements People
         this.name = name;
         this.email = email;
     }
-
-    //setters
-    public void setEmail(String email)
-    {
-        
-    }
-
-    //abstract method will be overridden by subclasses (runtime polymorphism)
-    public abstract String displayInfo();
 }
 
 class Student extends Person
@@ -231,9 +254,12 @@ class Student extends Person
             this.courses.add(course);
     }
 
-    @Override public String displayInfo()
+    @Override public void displayInfo()
     {
-        return "";
+        System.out.println(name + " - " + email + " - " + id + "\n     Courses:");
+
+        for (String course : courses)
+            System.out.println("          - " + course);
     }
 }
 
@@ -244,8 +270,8 @@ class Instructor extends Person
         super(name, email);
     }
 
-    @Override public String displayInfo()
+    @Override public void displayInfo()
     {
-        return "";
+        System.out.println(name + " - " + email);
     }
 }

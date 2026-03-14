@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.util.Scanner;
+import java.util.regex.Pattern;
 
 public class StudentManager
 {
@@ -20,7 +21,6 @@ public class StudentManager
             + "\n5. Exit");
 
             String input = scanner.nextLine();
-            boolean valid;
 
             switch(input)
             {
@@ -29,25 +29,79 @@ public class StudentManager
                     System.out.println("\n~ Add a Student ~");
 
                     //name input
+                    String nameInput;
+                    while(true)
+                    {
+                        System.out.println("Please enter their name:");
+                        nameInput = scanner.nextLine();
 
-                    System.out.println("Please enter their name:");
-                    String nameInput = scanner.nextLine();
+                        //validation
+
+                        //empty
+                        if(nameInput.isEmpty())
+                        {
+                            System.out.println("ERROR: Name cannot be blank.\n");
+                            continue;
+                        }
+                        //if the validation was successful, break the loop
+                        else
+                            break;
+                    }
 
                     //email input
-
-                    valid = false;
-                    while(!valid)
+                    String emailInput;
+                    while(true)
                     {
                         System.out.println("Please enter their email:");
-                        String emailInput = scanner.nextLine();
+                        emailInput = scanner.nextLine();
 
                         String emailRegex = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9+_.-]+$"; //[A-Za-z0-9+_.-] matches one or more [A-Z, a-z, 0-9], '_', '.', '-'
 
-                        //check if the email is valid based on the regex above
-                        if (emailInput.matches(emailRegex))
-                            valid = true;
+                        //validation
+
+                        //empty
+                        if(emailInput.isEmpty())
+                        {
+                            System.out.println("ERROR: Email cannot be blank.\n");
+                            continue;
+                        }
+                        //format
+                        else if (!emailInput.matches(emailRegex))
+                        {
+                            System.out.println("ERROR: Email format is incorrect.\n");
+                            continue;
+                        }
+                        //if the validation was successful, break the loop
                         else
-                            System.out.println("ERROR: Email is invalid.");
+                            break;
+                    }
+
+                    //student id input
+                    String idInput;
+                    while(true)
+                    {
+                        System.out.println("Please enter their student ID:");
+                        idInput = scanner.nextLine();
+
+                        String idRegex = "^S-[0-9]+$"; //format: S-123456789
+
+                        //validation
+
+                        //empty
+                        if(idInput.isEmpty())
+                        {
+                            System.out.println("ERROR: Student ID cannot be blank.\n");
+                            continue;
+                        }
+                        //format
+                        else if (!idInput.matches(idRegex))
+                        {
+                            System.out.println("ERROR: Student ID format is incorrect.\n");
+                            continue;
+                        }
+                        //if the validation was successful, break the loop
+                        else
+                            break;
                     }
                 break;
 
@@ -82,12 +136,15 @@ public class StudentManager
 
 abstract class Person
 {
+    String name;
+    String email;
+
     public Person(String name, String email)
     {
-
+        this.name = name;
+        this.email = email;
     }
 
-    //getters and setters
     //setters
     public void setEmail(String email)
     {

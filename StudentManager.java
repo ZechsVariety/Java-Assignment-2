@@ -65,7 +65,6 @@ public class StudentManager
                         if(nameInput.isEmpty())
                         {
                             System.out.println("ERROR: Name cannot be blank.\n");
-                            continue;
                         }
                         //if the validation was successful, break the loop
                         else
@@ -87,13 +86,11 @@ public class StudentManager
                         if(emailInput.isEmpty())
                         {
                             System.out.println("ERROR: Email cannot be blank.\n");
-                            continue;
                         }
                         //format
                         else if (!emailInput.matches(emailRegex))
                         {
                             System.out.println("ERROR: Email format is incorrect.\n");
-                            continue;
                         }
                         //if the validation was successful, break the loop
                         else
@@ -115,13 +112,11 @@ public class StudentManager
                         if(idInput.isEmpty())
                         {
                             System.out.println("ERROR: Student ID cannot be blank.\n");
-                            continue;
                         }
                         //format
                         else if (!idInput.matches(idRegex))
                         {
                             System.out.println("ERROR: Student ID format is incorrect.\n");
-                            continue;
                         }
                         //if the validation was successful, break the loop
                         else
@@ -177,7 +172,62 @@ public class StudentManager
 
                 //delete student
                 case "2":
-                    
+                    //print students
+                    System.out.println("\n~ STUDENTS: ~");
+                    for (People student : students)
+                    {
+                        student.displayInfo();
+                    }
+
+                    System.out.println();
+
+                    String idInput2;
+                    int foundStudentIndex = -1;
+                    while(true)
+                    {
+                        System.out.println("Which student would you like to delete? (Enter their student ID)");
+                        idInput2 = scanner.nextLine();
+
+                        String idRegex = "^S-[0-9]+$"; //format: S-123456789
+
+                        //validation
+
+                        //empty
+                        if(idInput2.isEmpty())
+                        {
+                            System.out.println("ERROR: Student ID cannot be blank.\n");
+                        }
+                        //format
+                        else if (!idInput2.matches(idRegex))
+                        {
+                            System.out.println("ERROR: Student ID format is incorrect.\n");
+                        }
+                        //if the validation was successful, try and find the student
+                        else
+                        {
+                            for (int i = 0; i < students.size(); i++)
+                            {
+                                if(((Student)students.get(i)).getID().contains(idInput2))
+                                {
+                                    foundStudentIndex = i;
+                                    break;
+                                }
+                            }
+
+                            //could not find student
+                            if(foundStudentIndex == -1)
+                                System.out.println("'" + idInput2 + "' did not match any students. Please try again.");
+                            //successful
+                            else
+                            {
+                                System.out.println("Successfully deleted " + ((Student)students.get(foundStudentIndex)).getName());
+
+                                students.remove(foundStudentIndex);
+
+                                break;
+                            }
+                        }
+                    }
                 break;
 
                 //search student
@@ -223,8 +273,10 @@ public class StudentManager
 
 interface People
 {
-    //abstract method will be overridden by subclasses (runtime polymorphism)
+    //abstract methods will be overridden by subclasses (runtime polymorphism)
     public abstract void displayInfo();
+    //public abstract String getID();
+    //public abstract String getName();
 }
 
 abstract class Person implements People
@@ -252,6 +304,17 @@ class Student extends Person
         //add each course individually
         for(String course : courses)
             this.courses.add(course);
+    }
+
+    //getters
+    //@Override public String getID()
+    public String getID()
+    {
+        return id;
+    }
+    public String getName()
+    {
+        return name;
     }
 
     @Override public void displayInfo()

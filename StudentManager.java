@@ -48,7 +48,7 @@ public class StudentManager
             + "\n1. Add a new student"
             + "\n2. Delete a student"
             + "\n3. Search for a student"
-            + "\n4. Display students and teachers"
+            + "\n4. Display students and instructors"
             + "\n5. Exit");
 
             String input = scanner.nextLine();
@@ -432,7 +432,7 @@ class Instructor extends Person
     }
 
     //overrides
-    
+
     @Override public void displayInfo()
     {
         System.out.println(name + " - " + email);

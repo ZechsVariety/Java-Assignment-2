@@ -5,6 +5,7 @@ public class StudentManager
 {
     public static void main(String[] args)
     {
+        //lists
         ArrayList<People> students = new ArrayList<>();
         ArrayList<People> instructors = new ArrayList<>();
 
@@ -23,17 +24,23 @@ public class StudentManager
         testCourses2.add("Into to Java");
         testCourses2.add("Outro to Java");
         
-        students.add(new Student("Aiden Piercy", "Aiden.Piercey@MyGeorgian.ca", "S-871239857", testCourses2));
+        students.add(new Student("Aiden Piercey", "Aiden.Piercey@MyGeorgian.ca", "S-871239857", testCourses2));
 
         //hardcoded instructors
+
         instructors.add(new Instructor("Mr. Elbertson", "JeremyElbertson@georgiancollege.ca"));
         instructors.add(new Instructor("Ms. Cole", "LouisCole@georgiancollege.ca"));
         instructors.add(new Instructor("Mr. Squarepants", "SpongebobSquarepants@georgiancollege.ca"));
 
+        //
+
         Scanner scanner = new Scanner(System.in);
+
+        //
 
         System.out.println("\n~~~ WELCOME TO THE STUDENT MANAGER! ~~~\n");
 
+        //running is set to false when you exit
         boolean running = true;
         while(running)
         {
@@ -164,10 +171,11 @@ public class StudentManager
                     }
 
                     //create the student and add them to the list
-                    People newStudent = new Student(nameInput, emailInput, idInput, coursesInput);
-                    students.add(newStudent);
+                    students.add(new Student(nameInput, emailInput, idInput, coursesInput));
 
                     System.out.println(nameInput + " has been registered!\n");
+
+                    //return to menu
                 break;
 
                 //delete student
@@ -181,8 +189,9 @@ public class StudentManager
 
                     System.out.println();
 
+                    //search for student to delete
                     String idInput2;
-                    int foundStudentIndex = -1;
+                    int foundStudentIndex = -1; //default to -1 so that the program knows when no student was found
                     while(true)
                     {
                         System.out.println("Which student would you like to delete? (Enter their student ID)");
@@ -205,8 +214,10 @@ public class StudentManager
                         //if the validation was successful, try and find the student
                         else
                         {
+                            //run through each student
                             for (int i = 0; i < students.size(); i++)
                             {
+                                //check if the student's id matches the inputted one
                                 if(((Student)students.get(i)).getID().equalsIgnoreCase(idInput2))
                                 {
                                     foundStudentIndex = i;
@@ -222,18 +233,22 @@ public class StudentManager
                             {
                                 System.out.println("Successfully deleted " + ((Student)students.get(foundStudentIndex)).getName());
 
+                                //delete the student
                                 students.remove(foundStudentIndex);
 
                                 break;
                             }
                         }
                     }
+
+                    //return to menu
                 break;
 
                 //search student
                 case "3":
                     System.out.println("\n~ SEARCH ~\n");
 
+                    //repeat until a student is found
                     while(true)
                     {
                         System.out.println("Please enter a student's name or student ID");
@@ -252,13 +267,17 @@ public class StudentManager
                             continue;
                         }
 
+                        //
+
                         boolean studentFound = false;
 
                         //if it matches the ID format, it's a student ID
                         if (searchInput.matches(idRegex))
                         {
+                            //run through each student
                             for(People student : students)
                             {
+                                //check if the ids roughly match
                                 if(((Student)student).getID().contains(searchInput))
                                 {
                                     System.out.println("\nStudent found!");
@@ -268,15 +287,18 @@ public class StudentManager
                                     studentFound = true;
 
                                     break;
+
+                                    //return to menu
                                 }
                             }
                         }
                         //otherwise, it's a name
                         else
                         {
+                            //run through each student
                             for(People student : students)
                             {
-                                //compare the strings in lowercase in order to ignore all casing
+                                //compare the names in lowercase in order to ignore all casing while using .contains() (so that you don't have to type the entire name)
                                 if(((Student)student).getName().toLowerCase().contains(searchInput.toLowerCase()))
                                 {
                                     System.out.println("\nStudent found!");
@@ -286,10 +308,13 @@ public class StudentManager
                                     studentFound = true;
 
                                     break;
+
+                                    //return to menu
                                 }
                             }
                         }
 
+                        //return to menu if found
                         if(studentFound)
                             break;
                         else
@@ -320,11 +345,15 @@ public class StudentManager
                 case "5":
                     System.out.println("Goodbye.");
                     running = false;
+
+                    //program ends
                 break;
 
                 //invalid input
                 default:
                     System.out.println("ERROR: Invalid Input.\n");
+
+                    //repeat menu
                 break;
             }
         }
@@ -337,8 +366,6 @@ interface People
 {
     //abstract methods will be overridden by subclasses (runtime polymorphism)
     public abstract void displayInfo();
-    //public abstract String getID();
-    //public abstract String getName();
 }
 
 abstract class Person implements People
@@ -346,6 +373,7 @@ abstract class Person implements People
     String name;
     String email;
 
+    //constructor
     public Person(String name, String email)
     {
         this.name = name;
@@ -358,9 +386,12 @@ class Student extends Person
     String id;
     ArrayList<String> courses = new ArrayList<>();
 
+    //constructor
     public Student(String name, String email, String id, ArrayList<String> courses)
     {
+        //inherit parent constructor
         super(name, email);
+
         this.id = id;
         
         //add each course individually
@@ -369,7 +400,7 @@ class Student extends Person
     }
 
     //getters
-    //@Override public String getID()
+
     public String getID()
     {
         return id;
@@ -379,10 +410,13 @@ class Student extends Person
         return name;
     }
 
+    //overrides
+
     @Override public void displayInfo()
     {
         System.out.println(name + " - " + email + " - " + id + "\n     Courses:");
 
+        //print each course
         for (String course : courses)
             System.out.println("          - " + course);
     }
@@ -390,11 +424,15 @@ class Student extends Person
 
 class Instructor extends Person
 {
+    //constructor
     public Instructor(String name, String email)
     {
+        //inherit super contrustctor (Instructor class has no unique variables)
         super(name, email);
     }
 
+    //overrides
+    
     @Override public void displayInfo()
     {
         System.out.println(name + " - " + email);

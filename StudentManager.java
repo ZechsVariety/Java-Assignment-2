@@ -207,7 +207,7 @@ public class StudentManager
                         {
                             for (int i = 0; i < students.size(); i++)
                             {
-                                if(((Student)students.get(i)).getID().contains(idInput2))
+                                if(((Student)students.get(i)).getID().equalsIgnoreCase(idInput2))
                                 {
                                     foundStudentIndex = i;
                                     break;
@@ -232,7 +232,69 @@ public class StudentManager
 
                 //search student
                 case "3":
-                    
+                    System.out.println("\n~ SEARCH ~\n");
+
+                    while(true)
+                    {
+                        System.out.println("Please enter a student's name or student ID");
+                        String searchInput = scanner.nextLine();
+
+                        //validation
+
+                        String idRegex = "^S-[0-9]+$"; //format: S-123456789
+
+                        //validation
+
+                        //empty
+                        if(searchInput.isEmpty())
+                        {
+                            System.out.println("ERROR: Name/ID cannot be blank.\n");
+                            continue;
+                        }
+
+                        boolean studentFound = false;
+
+                        //if it matches the ID format, it's a student ID
+                        if (searchInput.matches(idRegex))
+                        {
+                            for(People student : students)
+                            {
+                                if(((Student)student).getID().contains(searchInput))
+                                {
+                                    System.out.println("\nStudent found!");
+
+                                    ((Student)student).displayInfo();
+
+                                    studentFound = true;
+
+                                    break;
+                                }
+                            }
+                        }
+                        //otherwise, it's a name
+                        else
+                        {
+                            for(People student : students)
+                            {
+                                //compare the strings in lowercase in order to ignore all casing
+                                if(((Student)student).getName().toLowerCase().contains(searchInput.toLowerCase()))
+                                {
+                                    System.out.println("\nStudent found!");
+
+                                    ((Student)student).displayInfo();
+
+                                    studentFound = true;
+
+                                    break;
+                                }
+                            }
+                        }
+
+                        if(studentFound)
+                            break;
+                        else
+                            System.out.println("ERROR: No students match your search.\n");
+                    }
                 break;
 
                 //display students and instructors
